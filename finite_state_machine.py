@@ -1,6 +1,7 @@
 from enum  import Enum
+from rule import Rule
 
-class State(Enum)
+class State(Enum):
     S0 = "inital state"
     S1 = "reading input"
     S2 = "verifying"
@@ -31,7 +32,7 @@ class FSM:
 
     def gen_rules(self):
         # Inital state -> Reading
-        R1 = Rule(State.S0, State.S1, [str(i) for i in range(10)], lambda agent,signal: agent.tmp_passwd+=signal)
+        R1 = Rule(State.S0, State.S1, [str(i) for i in range(10)], lambda agent,signal: agent.password_buffer+=signal)
         # Reading -> Verify
         R2 = Rule(State.S1, State.S2,['*'], lambda agent, signal: agent.overwride_signal=True)
         # Verify -> Init State
