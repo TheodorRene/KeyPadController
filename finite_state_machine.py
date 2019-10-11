@@ -1,4 +1,4 @@
-from rules import Rule
+from rule import Rule
 
 class State(Enum)
     S0 = "inital state"
