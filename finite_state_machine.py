@@ -7,7 +7,7 @@ class State(Enum)
     S3 = "logged in"
 
 class FSM:
-    def __init__():
+    def __init__(self):
         self.curState = State.S0
         self.rules = []
 
