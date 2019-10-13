@@ -8,6 +8,7 @@ class State(Enum):
     S3 = "logged in"
     S4 = "first password change"
     S5 = "second password change"
+    S6 = "Exit"
 
 class FSM:
     def __init__(self, agent):
@@ -22,7 +23,7 @@ class FSM:
 
     def run_rules(self, signal):
         if self.debug:
-            print("Current state: ", self.state)
+            print("Current state: ", self.state.name)
         for rule in self.rules:
             if self.apply_rule(rule, signal):
                 self.fire_rule(rule, signal)
@@ -31,17 +32,19 @@ class FSM:
         self.change_state(State.S0)
 
     def apply_rule(self, rule, signal):
+        if rule.trig_signals == ['all']:
+            return True
         if self.state == rule.trig_state and signal in rule.trig_signals:
             return True
         return False
     def change_state(self, new_state):
-        print("Changing state", self.state, " ->" , new_state)
+        print("Changing state", self.state.value, " ->" , new_state.value)
         self.state = new_state
 
     def fire_rule(self, rule, signal):
         rule.action(self.agent, signal)
         self.change_state(rule.new_state)
-        print("New state: ", self.state)
+        print("New state: ", self.state.name)
 
 
 
@@ -56,9 +59,18 @@ class FSM:
         R3 = Rule(State.S2, State.S0, [False], lambda agent, signal: agent.reset_buffer(signal))
         # Verify -> logged in
         R4 = Rule(State.S2, State.S3, [True], lambda agent,signal: agent.update_status(signal))
-       # R5 = Rule(State.S3, State.S4, ['*'], lambda agent,signal: agent.reset_buffer(signal))
-       # R5 = Rule(State.S4, State.S4, [str(i) for i in range(10)], lambda agent,signal: agent.update_status(signal))
-        rules = [R1, R1_1, R2, R3, R4]
+        # Verify -> Change password
+        R5 = Rule(State.S3, State.S4, ['*'], lambda agent,signal: agent.reset_buffer(signal))
+        # Change password -> Change password
+        R6 = Rule(State.S4, State.S4, [str(i) for i in range(10)], lambda agent,signal: agent.append_buffer(signal))
+        # Change password -> Change password 2
+        R7 = Rule(State.S4, State.S5, ['*'], lambda agent,signal: None)
+        # Change password 2 -> Change password 2
+        R8 = Rule(State.S5, State.S5, [str(i) for i in range(10)], lambda agent,signal: agent.append_buffer2(signal))
+        # Change password 2 -> Logged in
+        R9 = Rule(State.S5, State.S3, ['all'], lambda agent,signal: agent.validate_passcode_change(signal))
+        R10 = Rule(State.S3, State.S6, ['e'], lambda agent,signal: agent.validate_passcode_change(signal))
+        rules = [R1, R1_1, R2, R3, R4, R5, R6, R7, R8, R9, R10]
         for el in rules:
             self.add_rule(el)
 

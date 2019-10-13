@@ -2,6 +2,7 @@ from finite_state_machine import State, FSM
 class KpcAgent:
     def __init__(self):
         self.passwd_buffer = ""
+        self.passwd_buffer2 = ""
         self.override_signal = False
         self.passwd="0000"
         self.fsm = FSM(self)
@@ -23,8 +24,13 @@ class KpcAgent:
         self.override_signal=False
         return self.passwd == self.passwd_buffer
 
-    def validate_passcode_change(self):
-        pass
+    def validate_passcode_change(self, signal):
+        if signal != '*':
+            return
+        if self.passwd_buffer == self.passwd_buffer2:
+            print("Password is changed")
+            self.passwd = self.passwd_buffer
+        return
 
     def light_one_led(self):
         pass
@@ -44,6 +50,9 @@ class KpcAgent:
     def append_buffer(self, signal):
         self.passwd_buffer+=signal
 
+    def append_buffer2(self, signal):
+        self.passwd_buffer2+=signal
+
     def reset_buffer(self, signal):
         self.passwd_buffer=""
 
@@ -53,7 +62,8 @@ class KpcAgent:
 if __name__=="__main__":
     agent = KpcAgent()
     print("Starting machine")
-    while agent.fsm.state != State.S3:
+    print("State: ", agent.fsm.state.value)
+    while agent.fsm.state != State.S6:
         signal = agent.get_next_signal()
         agent.fsm.run_rules(signal)
 
