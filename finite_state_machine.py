@@ -6,8 +6,8 @@ class State(Enum):
     S1 = "reading input"
     S2 = "verifying"
     S3 = "logged in"
-    s4 = "first password change"
-    s5 = "second password change"
+    S4 = "first password change"
+    S5 = "second password change"
 
 class FSM:
     def __init__(self, agent):
@@ -56,8 +56,9 @@ class FSM:
         R3 = Rule(State.S2, State.S0, [False], lambda agent, signal: agent.reset_buffer(signal))
         # Verify -> logged in
         R4 = Rule(State.S2, State.S3, [True], lambda agent,signal: agent.update_status(signal))
-        R5 = Rule(State.S3, State.S4, ['*'], lambda agent,signal: agent.reset_buffer(signal))
-        R5 = Rule(State.S4, State.S4, [str(i) for i in range(10)], lambda agent,signal: agent.update_status(signal))
+       # R5 = Rule(State.S3, State.S4, ['*'], lambda agent,signal: agent.reset_buffer(signal))
+       # R5 = Rule(State.S4, State.S4, [str(i) for i in range(10)], lambda agent,signal: agent.update_status(signal))
+        rules = [R1, R1_1, R2, R3, R4]
         for el in rules:
             self.add_rule(el)
 
