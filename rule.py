@@ -5,5 +5,3 @@ class Rule:
         self.new_state = new_state
         self.trig_signals = trig_signals
         self.action = action
-
-
