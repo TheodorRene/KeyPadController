@@ -11,14 +11,16 @@ class KpcAgent:
         self.twinkle_leds()
 
     def get_next_signal(self):
-        if overwrite_signal:
+        if self.override_signal:
             return self.verify_login()
         return input()
 
     def verify_login(self):
 
+        print("verifying login")
+        print("passwd_buffer", self.passwd_buffer)
+        print("passwd", self.passwd)
         self.override_signal=False
-        self.passwd_buffer=""
         return self.passwd == self.passwd_buffer
 
     def validate_passcode_change(self):
@@ -36,8 +38,21 @@ class KpcAgent:
     def exit_action(self):
         pass
 
-def main():
+    def set_override_signal(self, signal):
+        self.override_signal=True
+
+    def append_buffer(self, signal):
+        self.passwd_buffer+=signal
+
+    def reset_buffer(self, signal):
+        self.passwd_buffer=""
+
+    def update_status(self, boolean):
+        self.is_logged_in = boolean
+
+if __name__=="__main__":
     agent = KpcAgent()
+    print("Starting machine")
     while agent.fsm.state != State.S3:
         signal = agent.get_next_signal()
         agent.fsm.run_rules(signal)
