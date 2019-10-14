@@ -27,6 +27,7 @@ class KpcAgent:
             return self.verify_login()
         return self.keypad.get_next_signal()
 
+
     def verify_login(self):
 
         print("verifying login")
@@ -78,8 +79,7 @@ if __name__ == "__main__":
     print("Starting machine")
     print("State: ", AGENT.fsm.state.value)
     while AGENT.fsm.state != State.S6:
-        SIGNAL = str(AGENT.get_next_signal())
-        print(SIGNAL)
+        SIGNAL = AGENT.get_next_signal()
         AGENT.fsm.run_rules(SIGNAL)
 
     print("You are logged in")

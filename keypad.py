@@ -35,10 +35,10 @@ class Keypad:
                 GPIO.output(rp, GPIO.LOW)
                 
     def coordinates_to_signal(self, coords):
-        mapping = {(0,0):1, (0,1):2, (0,2):3,
-                        (1,0):4, (1,1):5, (1,2):6,
-                        (2,0):7, (2,1):8, (2,2):9,
-                        (3,0):'*', (3,1):0, (3,2):'#'}
+        mapping = {(0,0):'1', (0,1):'2', (0,2):'3',
+                        (1,0):'4', (1,1):'5', (1,2):'6',
+                        (2,0):'7', (2,1):'8', (2,2):'9',
+                        (3,0):'*', (3,1):'0', (3,2):'#'}
         return mapping[coords]
 
     def get_next_signal(self):
