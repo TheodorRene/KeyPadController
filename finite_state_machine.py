@@ -3,6 +3,7 @@ from rule import Rule
 
 
 class State(Enum):
+    # State subclass of superclass Enum
     S0 = "inital state"
     S1 = "reading input"
     S2 = "verifying"
@@ -13,6 +14,7 @@ class State(Enum):
 
 
 class FSM:
+    # Finite state machine class keeping track of what state the system is in
     def __init__(self, agent):
         self.state = State.S0
         self.rules = []
@@ -51,65 +53,61 @@ class FSM:
 
     def gen_rules(self):
         # Inital state -> Reading
-        R1 = Rule(State.S0,
-                  State.S1,
-                  [str(i) for i in range(10)],
-                  self.agent.append_buffer)
+        rule1 = Rule(State.S0,
+                     State.S1,
+                     [str(i) for i in range(10)],
+                     self.agent.append_buffer)
         # Reading -> Reading
-        R1_1 = Rule(State.S1,
-                    State.S1,
-                    [str(i) for i in range(10)],
-                    self.agent.append_buffer)
+        rule1_1 = Rule(State.S1,
+                       State.S1,
+                       [str(i) for i in range(10)],
+                       self.agent.append_buffer)
         # Reading -> Verify
-        R2 = Rule(
+        rule2 = Rule(
             State.S1,
             State.S2,
             ['*'],
             self.agent.set_override_signal)
         # Verify -> Init State
-        R3 = Rule(
+        rule3 = Rule(
             State.S2,
             State.S0,
             [False],
             self.agent.reset_buffer)
         # Verify -> logged in
-        R4 = Rule(
+        rule4 = Rule(
             State.S2,
             State.S3,
             [True],
             self.agent.update_status)
         # Verify -> Change password
-        R5 = Rule(
+        rule5 = Rule(
             State.S3,
             State.S4,
             ['*'],
             self.agent.reset_buffer)
         # Change password -> Change password
-        R6 = Rule(State.S4,
-                  State.S4,
-                  [str(i) for i in range(10)],
-                  self.agent.append_buffer)
+        rule6 = Rule(State.S4,
+                     State.S4, [str(i) for i in range(10)], self.agent.append_buffer)
         # Change password -> Change password 2
-        R7 = Rule(State.S4, State.S5, ['*'], lambda signal: None)
+        rule7 = Rule(State.S4, State.S5, ['*'], lambda signal: None)
         # Change password 2 -> Change password 2
-        R8 = Rule(State.S5,
-                  State.S5,
-                  [str(i) for i in range(10)],
-                  self.agent.append_buffer2)
+        rule8 = Rule(State.S5,
+                     State.S5, [str(i) for i in range(10)],
+                     self.agent.append_buffer2)
         # Change password 2 -> Logged in
-        R9 = Rule(
+        rule9 = Rule(
             State.S5,
             State.S3,
             ['all'],
             self.agent.validate_passcode_change)
-        R10 = Rule(
+        rule10 = Rule(
             State.S3,
             State.S6,
             ['e'],
             self.agent.validate_passcode_change)
 
-        rules = [R1, R1_1, R2, R3, R4, R5, R6, R7, R8, R9, R10]
+        rules = [rule1, rule1_1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10]
 
-
-        for el in rules:
-            self.add_rule(el)
+        for rule in rules:
+            self.add_rule(rule)
