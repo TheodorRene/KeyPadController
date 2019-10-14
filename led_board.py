@@ -1,4 +1,4 @@
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
 import keypad as kp
 
 class LEDboard:
@@ -6,6 +6,7 @@ class LEDboard:
     def __init__(self):
         self.pins = []
         self.pin_led_states = []
+        self.setup()
         self.set_pin(0, -1)
         self.set_pin(1, -1)
         self.set_pin(2, -1)
@@ -44,4 +45,5 @@ if __name__ == '__main__':
     keypad = kp.Keypad()
     while True:
         x = int(keypad.get_next_signal())
+        print(x)
         led.light_led(x)
