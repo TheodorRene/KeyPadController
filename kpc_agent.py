@@ -1,3 +1,4 @@
+"""keypad controller agent module"""
 from finite_state_machine import State, FSM
 from keypad import Keypad
 
@@ -26,7 +27,6 @@ class KpcAgent:
         if self.override_signal:
             return self.verify_login()
         return self.keypad.get_next_signal()
-
 
     def verify_login(self):
 

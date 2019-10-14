@@ -1,9 +1,10 @@
+"""finite state machine module"""
 from enum import Enum
 from rule import Rule
 
 
 class State(Enum):
-    # State subclass of superclass Enum
+    """State subclass of superclass Enum"""
     S0 = "inital state"
     S1 = "reading input"
     S2 = "verifying"
@@ -14,7 +15,7 @@ class State(Enum):
 
 
 class FSM:
-    # Finite state machine class keeping track of what state the system is in
+    """Finite state machine class keeping track of what state the system is in"""
     def __init__(self, agent):
         self.state = State.S0
         self.rules = []
