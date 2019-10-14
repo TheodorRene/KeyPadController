@@ -1,3 +1,5 @@
+import time
+
 import RPi.GPIO as GPIO
 
 class Keypad:
@@ -16,11 +18,17 @@ class Keypad:
             GPIO.setup(cp, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     def do_polling(self):
+
         while True:
+
             for x, rp in enumerate(self.rows):
                 GPIO.output(rp, GPIO.HIGH)
                 for y, cp in enumerate(self.columns):
-                    if GPIO.input(cp) == GPIO.HIGH:
+                    counter = 0
+                    while GPIO.input(cp) == GPIO.HIGH:
+                        counter += 1
+                        time.sleep(5)
+                    if counter >= 20:
                         active = (x,y)
                         return self.coordinates_to_signal(active)
                 GPIO.output(rp, GPIO.LOW)
