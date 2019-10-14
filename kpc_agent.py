@@ -78,7 +78,8 @@ if __name__ == "__main__":
     print("Starting machine")
     print("State: ", AGENT.fsm.state.value)
     while AGENT.fsm.state != State.S6:
-        SIGNAL = AGENT.get_next_signal()
+        SIGNAL = str(AGENT.get_next_signal())
+        print(SIGNAL)
         AGENT.fsm.run_rules(SIGNAL)
 
     print("You are logged in")

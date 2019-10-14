@@ -27,10 +27,11 @@ class Keypad:
                     counter = 0
                     while GPIO.input(cp) == GPIO.HIGH:
                         counter += 1
-                        time.sleep(5)
-                    if counter >= 20:
+                        time.sleep(0.005)
+                    if counter >= 20: 
                         active = (x,y)
                         return self.coordinates_to_signal(active)
+                    
                 GPIO.output(rp, GPIO.LOW)
                 
     def coordinates_to_signal(self, coords):
@@ -44,4 +45,5 @@ class Keypad:
         return self.do_polling()
 if __name__=='__main__':
     kp = Keypad()
-    print(kp.get_next_signal())
+    while True:
+        print(kp.get_next_signal())
