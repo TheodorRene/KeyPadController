@@ -30,4 +30,3 @@ class Keypad:
 
     def get_next_signal(self):
         return do_polling
-        pass

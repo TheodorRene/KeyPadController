@@ -1,4 +1,5 @@
 from finite_state_machine import State, FSM
+from keypad import Keypad
 
 
 class KpcAgent:
@@ -9,6 +10,7 @@ class KpcAgent:
         self.is_logged_in = False
         self.passwd = self.get_password_from_file()
         self.fsm = FSM(self)
+        self.keypad = Keypad()
 
     def get_password_from_file(self):
         passwd = ""
@@ -23,7 +25,7 @@ class KpcAgent:
     def get_next_signal(self):
         if self.override_signal:
             return self.verify_login()
-        return input()
+        return self.keypad.get_next_signal()
 
     def verify_login(self):
 
