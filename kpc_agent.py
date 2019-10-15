@@ -92,7 +92,7 @@ class KpcAgent:
         self.is_logged_in = boolean
         self.led_board.light_sequence([0, 4, 2], 0.3)
     
-    def logout_lightshow(signal):
+    def logout_lightshow(self, signal):
         self.led_board.light_sequence([1,2,3,3,2,1],0.2)
 
 
