@@ -1,6 +1,7 @@
 """keypad controller agent module"""
 from finite_state_machine import State, FSM
 from keypad import Keypad
+from led_board import LEDboard
 
 
 class KpcAgent:
@@ -13,6 +14,7 @@ class KpcAgent:
         self.passwd = self.get_password_from_file()
         self.fsm = FSM(self)
         self.keypad = Keypad()
+        self.led_board = LEDboard() 
 
     def get_password_from_file(self):
         """get password from file"""
@@ -21,9 +23,9 @@ class KpcAgent:
             passwd = passwd_file.readline().rstrip()
         return passwd
 
-    def init_passcode_entry(self):
+    def init_passcode_entry(self, signal):
         """empty passwordbuffer and blinks leds"""
-        self.passwd_buffer = ""
+        self.passwd_buffer += signal
         self.twinkle_leds()
 
     def get_next_signal(self):
@@ -38,7 +40,9 @@ class KpcAgent:
         print("passwd_buffer", self.passwd_buffer)
         print("passwd", self.passwd)
         self.override_signal = False
-        return self.passwd == self.passwd_buffer
+        buff = self.passwd_buffer
+        self.reset_buffer(None)
+        return self.passwd == buff
 
     def validate_passcode_change(self, signal):
         """validates password change"""
@@ -54,11 +58,13 @@ class KpcAgent:
     def light_one_led(self):
         pass
 
-    def flash_leds(self):
-        pass
+    def flash_all_leds(self, signal):
+        print("===FLASHING ALL LEDS===")
+        self.led_board.flash_all_leds()
 
-    def twinkle_leds(self):
-        pass
+    def twinkle_all_leds(self):
+        print("===TWINKLING LEDS===")
+        self.led_boad.twinkle_all_leds()
 
     def exit_action(self):
         pass
@@ -85,6 +91,7 @@ if __name__ == "__main__":
     print("State: ", AGENT.fsm.state.value)
     while AGENT.fsm.state != State.S6:
         SIGNAL = AGENT.get_next_signal()
+        print(SIGNAL)
         AGENT.fsm.run_rules(SIGNAL)
 
     print("You are logged in")

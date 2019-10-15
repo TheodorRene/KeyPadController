@@ -57,7 +57,7 @@ class FSM:
         rule1 = Rule(State.S0,
                      State.S1,
                      [str(i) for i in range(10)],
-                     self.agent.append_buffer)
+                     self.agent.init_passcode_entry)
         # Reading -> Reading
         rule1_1 = Rule(State.S1,
                        State.S1,
@@ -74,14 +74,14 @@ class FSM:
             State.S2,
             State.S0,
             [False],
-            self.agent.reset_buffer)
+            self.agent.flash_all_leds)
         # Verify -> logged in
         rule4 = Rule(
             State.S2,
             State.S3,
             [True],
             self.agent.update_status)
-        # Verify -> Change password
+        # Logged in -> Change password
         rule5 = Rule(
             State.S3,
             State.S4,
@@ -102,13 +102,8 @@ class FSM:
             State.S3,
             ['all'],
             self.agent.validate_passcode_change)
-        rule10 = Rule(
-            State.S3,
-            State.S6,
-            ['e'],
-            self.agent.validate_passcode_change)
 
-        rules = [rule1, rule1_1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10]
+        rules = [rule1, rule1_1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9]
 
         for rule in rules:
             self.add_rule(rule)
