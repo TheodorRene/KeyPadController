@@ -11,7 +11,11 @@ class State(Enum):
     S3 = "logged in"
     S4 = "first password change"
     S5 = "second password change"
-    S6 = "Exit"
+    S6 = "Choose LED"
+    S7 = "Choose duration"
+    S8 = "Begin logout"
+    S9 = "Logout"
+
 
 
 class FSM:
@@ -102,8 +106,36 @@ class FSM:
             State.S3,
             ['all'],
             self.agent.validate_passcode_change)
+        #### Not implemented ####
+        # Logged in -> Choose Led
+        rule10 = Rule(
+            State.S3,
+            State.S6,
+            [str(i) for i in range(10)],
+            self.agent.light_one_led
+        )
+        # Choose Led -> Choose duration
+        rule11 = Rule(
+            State.S6,
+            State.S7,
+            ['*'],
+            self.agent.reset_buffer
+        # Choose duration -> Choose duration
+        rule12 = Rule(
+            State.S7,
+            State.S7,
+            [str(i) for i in range(10)],
+            self.agent.append_buffer)
+        # Choose duration -> Logged in
+        rule13 = Rule(
+            State.S7,
+            State.S3,
+            ['*'],
+            self.agent.light_one_led)
 
-        rules = [rule1, rule1_1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9]
+e_change)
+
+        rules = [rule1, rule1_1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11, rule12, rule13]
 
         for rule in rules:
             self.add_rule(rule)

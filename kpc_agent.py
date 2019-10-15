@@ -14,7 +14,7 @@ class KpcAgent:
         self.passwd = self.get_password_from_file()
         self.fsm = FSM(self)
         self.keypad = Keypad()
-        self.led_board = LEDboard() 
+        self.led_board = LEDboard()
 
     def get_password_from_file(self):
         """get password from file"""
@@ -55,8 +55,11 @@ class KpcAgent:
                 passwd_file.write(self.passwd)
         return
 
-    def light_one_led(self):
-        pass
+    def light_one_led(self, signal):
+        if self.led != -1:
+            self.led = signal
+            return
+        self.led_board.light_single_led(self.led, self.passwd_buffer)
 
     def flash_all_leds(self, signal):
         print("===FLASHING ALL LEDS===")
