@@ -67,6 +67,11 @@ class LEDboard:
             diff = time.time() - start
         self.unlight_led()
 
+    def light_single_led(self, led_number, seconds):
+        self.light_led(led_number)
+        time.sleep(seconds)
+        self.unlight_led()
+
     def twinkle_all_leds(self):
         for i in range(20):
             num = random.randint(0, 5)
