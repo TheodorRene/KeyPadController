@@ -16,6 +16,7 @@ class KpcAgent:
         self.keypad = Keypad()
         self.led_board = LEDboard()
         self.initiated = False
+        self.led = -1
 
     def get_password_from_file(self):
         """get password from file"""
@@ -59,10 +60,10 @@ class KpcAgent:
         return
 
     def light_one_led(self, signal):
-        if self.led != -1:
-            self.led = signal
+        if self.led == -1:
+            self.led = int(signal)
             return
-        self.led_board.light_single_led(self.led, self.passwd_buffer)
+        self.led_board.light_single_led(self.led, int(self.passwd_buffer))
 
     def flash_all_leds(self, signal):
         print("===FLASHING ALL LEDS===")
@@ -95,7 +96,7 @@ if __name__ == "__main__":
     AGENT = KpcAgent()
     print("Starting machine")
     print("State: ", AGENT.fsm.state.value)
-    while AGENT.fsm.state != State.S6:
+    while AGENT.fsm.state != State.S9:
         SIGNAL = AGENT.get_next_signal()
         print(SIGNAL)
         AGENT.fsm.run_rules(SIGNAL)
