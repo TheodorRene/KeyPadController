@@ -26,7 +26,7 @@ class KpcAgent:
     def init_passcode_entry(self, signal):
         """empty passwordbuffer and blinks leds"""
         self.passwd_buffer += signal
-        self.twinkle_leds()
+        self.twinkle_all_leds()
 
     def get_next_signal(self):
         """gets next signal from keypad if not last signal was *"""
@@ -60,11 +60,11 @@ class KpcAgent:
 
     def flash_all_leds(self, signal):
         print("===FLASHING ALL LEDS===")
-        self.led_board.flash_all_leds()
+        self.led_board.flash_all_leds(3)
 
     def twinkle_all_leds(self):
         print("===TWINKLING LEDS===")
-        self.led_boad.twinkle_all_leds()
+        self.led_board.twinkle_all_leds()
 
     def exit_action(self):
         pass

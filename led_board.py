@@ -2,7 +2,7 @@
 import random
 import time
 
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
 import keypad as kp
 
 
@@ -68,7 +68,7 @@ class LEDboard:
 
 if __name__ == '__main__':
     LED = LEDboard()
-    KEYPAD = keypad.Keypad()
+    KEYPAD = kp.Keypad()
     while True:
         SIGNAL = int(KEYPAD.get_next_signal())
         print(SIGNAL)
