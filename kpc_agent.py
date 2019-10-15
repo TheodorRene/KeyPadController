@@ -15,6 +15,7 @@ class KpcAgent:
         self.fsm = FSM(self)
         self.keypad = Keypad()
         self.led_board = LEDboard()
+        self.initiated = False
 
     def get_password_from_file(self):
         """get password from file"""
@@ -26,7 +27,9 @@ class KpcAgent:
     def init_passcode_entry(self, signal):
         """empty passwordbuffer and blinks leds"""
         self.passwd_buffer += signal
-        self.twinkle_all_leds()
+        if not self.initiated:
+            self.twinkle_all_leds()
+        self.initiated = True
 
     def get_next_signal(self):
         """gets next signal from keypad if not last signal was *"""
