@@ -1,8 +1,10 @@
+"""keypad controller agent module"""
 from finite_state_machine import State, FSM
 from keypad import Keypad
 
 
 class KpcAgent:
+    """Keypad controller agent class"""
     def __init__(self):
         self.passwd_buffer = ""
         self.passwd_buffer2 = ""
@@ -13,23 +15,25 @@ class KpcAgent:
         self.keypad = Keypad()
 
     def get_password_from_file(self):
+        """get password from file"""
         passwd = ""
         with open('passwd.txt') as passwd_file:
             passwd = passwd_file.readline().rstrip()
         return passwd
 
     def init_passcode_entry(self):
+        """empty passwordbuffer and blinks leds"""
         self.passwd_buffer = ""
         self.twinkle_leds()
 
     def get_next_signal(self):
+        """gets next signal from keypad if not last signal was *"""
         if self.override_signal:
             return self.verify_login()
         return self.keypad.get_next_signal()
 
-
     def verify_login(self):
-
+        """verify login"""
         print("verifying login")
         print("passwd_buffer", self.passwd_buffer)
         print("passwd", self.passwd)
@@ -37,6 +41,7 @@ class KpcAgent:
         return self.passwd == self.passwd_buffer
 
     def validate_passcode_change(self, signal):
+        """validates password change"""
         if signal != '*':
             return
         if self.passwd_buffer == self.passwd_buffer2:

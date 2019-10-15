@@ -1,4 +1,8 @@
+"""Rule module"""
+
+
 class Rule:
+    """rule class"""
 
     def __init__(self, trig_state, new_state, trig_signals, action):
         self.trig_state = trig_state
