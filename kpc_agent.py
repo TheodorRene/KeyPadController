@@ -104,5 +104,3 @@ if __name__ == "__main__":
         SIGNAL = AGENT.get_next_signal()
         print(SIGNAL)
         AGENT.fsm.run_rules(SIGNAL)
-
-    print("You are logged in")
