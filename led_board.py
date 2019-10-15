@@ -72,6 +72,20 @@ class LEDboard:
         time.sleep(seconds)
         self.unlight_led()
 
+    def light_leds(self, leds, seconds):
+        start = time.time()
+        pin = 0
+        diff = 0
+        while diff < seconds:
+            self.light_led(leds[pin])
+            diff = time.time() - start
+            pin = (pin + 1) % len(leds)
+        self.unlight_led()
+
+    def light_sequence(self, sequence, delay):
+        for led in sequence:
+            self.light_single_led(led, delay)
+
     def twinkle_all_leds(self):
         for i in range(20):
             num = random.randint(0, 5)
