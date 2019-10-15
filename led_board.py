@@ -52,17 +52,17 @@ class LEDboard:
         start = time.time()
         diff = 0
         pin = 0
-        blink_time = 0.2
+        blink_time = 0.15
         while diff < k:
             tmp = time.time()
             tmp_diff = 0
-            while tmp_diff < blink_time or diff < k:
+            while tmp_diff < blink_time and diff < k:
                 self.light_led(pin)
                 diff = time.time() - start
                 tmp_diff = time.time() - tmp
                 pin = (pin + 1) % 6
             self.unlight_led()
-            sleeptime = min(0.2, k-diff)
+            sleeptime = min(0.15, abs(k-diff))
             time.sleep(sleeptime)
             diff = time.time() - start
         self.unlight_led()
