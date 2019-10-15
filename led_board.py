@@ -44,16 +44,33 @@ class LEDboard:
         for pin_index, pin_state in enumerate(self.pin_led_states[led_number]):
             self.set_pin(pin_index, pin_state)
 
+    def unlight_led(self):
+        for i in range(3):
+            self.set_pin(i, 0)
+
     def flash_all_leds(self, k):
         start = time.time()
         diff = 0
         pin = 0
+        blink_time = 0.2
         while diff < k:
-            self.light_led(pin)
+            tmp = time.time()
+            tmp_diff = 0
+            while tmp_diff < blink_time or diff < k:
+                self.light_led(pin)
+                diff = time.time() - start
+                tmp_diff = time.time() - tmp
+                pin = (pin + 1) % 6
+            self.unlight_led()
+            sleeptime = min(0.2, k-diff)
+            time.sleep(sleeptime)
             diff = time.time() - start
-            pin = (pin + 1) % 6
-        for i in range(3):
-            self.set_pin(i, 0)
+        self.unlight_led()
+
+    def light_single_led(self, led_number, seconds):
+        self.light_led(led_number)
+        time.sleep(seconds)
+        self.unlight_led()
 
     def twinkle_all_leds(self):
         for i in range(20):
