@@ -109,7 +109,7 @@ class FSM:
         rule9 = Rule(
             State.S5,
             State.S3,
-            ['all'],
+            ['*'],
             self.agent.validate_passcode_change,
             "rule9")
         # Logged in -> Choose Led
