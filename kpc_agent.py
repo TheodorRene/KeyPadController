@@ -64,6 +64,7 @@ class KpcAgent:
             self.led = int(signal)
             return
         self.led_board.light_single_led(self.led, int(self.passwd_buffer))
+        self.led = -1
 
     def flash_all_leds(self, signal):
         print("===FLASHING ALL LEDS===")
